@@ -8,14 +8,14 @@ where
     DI: ReadData<Error = Error<CommE, PinE>> + WriteData<Error = Error<CommE, PinE>>,
 {
     /// Read latest sensor data
-    pub fn data(&mut self, selector: SensorSelector) -> Result<Data, Error<CommE, PinE>> {
+    pub async fn data(&mut self, selector: SensorSelector) -> Result<Data, Error<CommE, PinE>> {
         let result = if selector != SensorSelector::new() {
             let (begin, end) = get_data_addresses(selector);
             let mut data = [0_u8; 24];
             data[0] = begin;
             let len = (1 + end - begin) as usize;
-            self.iface.read_data(&mut data[0..len])?;
-            get_data(selector, &data[1..], (begin - Register::MAG) as usize)
+            self.iface.read_data(&mut data[0..len]).await?;
+            get_data(selector, &data[1..], (begin - Register::MAG) as usize).await
         } else {
             Data {
                 accel: None,
@@ -28,7 +28,7 @@ where
     }
 }
 
-fn get_data(selector: SensorSelector, data: &[u8], data_offset: usize) -> Data {
+async fn get_data(selector: SensorSelector, data: &[u8], data_offset: usize) -> Data {
     let mut result = Data {
         accel: None,
         gyro: None,

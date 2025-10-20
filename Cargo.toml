@@ -6,7 +6,13 @@ repository = "https://github.com/eldruin/bmi160-rs"
 license = "MIT OR Apache-2.0"
 description = "Platform-agnostic Rust driver for the BMI160 inertial measurement unit (IMU)."
 readme = "README.md"
-keywords = ["inertial", "accelerometer", "gyroscope", "imu", "embedded-hal-driver"]
+keywords = [
+    "inertial",
+    "accelerometer",
+    "gyroscope",
+    "imu",
+    "embedded-hal-driver",
+]
 categories = ["embedded", "hardware-support", "no-std"]
 homepage = "https://github.com/eldruin/bmi160-rs"
 documentation = "https://docs.rs/bmi160"
@@ -21,11 +27,12 @@ include = [
 edition = "2018"
 
 [dependencies]
-embedded-hal = "0.2.3"
+embedded-hal-async = "1"
+embedded-hal = "1"
 
 [dev-dependencies]
-linux-embedded-hal = "0.3"
-embedded-hal-mock = "0.9"
+linux-embedded-hal = "0.4.0"
+embedded-hal-mock = "0.11.1"
 
 [profile.release]
 lto = true
